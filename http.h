@@ -25,12 +25,30 @@ enum status
         INTERNAL_SERVER_ERROR = 500,
 };
 
+/*
 enum head_name
 {
         ACCEPT,
         CONTENT_ENCODING,
         CONTENT_LENGTH,
         CONTENT_TYPE,
+};
+*/
+
+struct head
+{
+        char *key;
+        char *value;
+};
+
+struct header
+{
+        struct head *headers;
+};
+
+struct body
+{
+        char *body;
 };
 
 struct request
@@ -43,20 +61,7 @@ struct request
         struct body b;
 };
 
-struct header
-{
-        struct head *headers;
-};
-
-struct head
-{
-        enum head_name head_key;
-        char *value;
-};
-
-struct body
-{
-        char *body;
-};
+int _create_request_line(char *method, char *url, char *version, char *line);
+int create_request(char *request_string);
 
 #endif
