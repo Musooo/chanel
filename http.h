@@ -1,6 +1,10 @@
 #ifndef HTTP_H
 #define HTTP_H
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 enum status
 {
         CONTINUE = 100,
@@ -61,6 +65,7 @@ struct request
         struct body b;
 };
 
+struct head _divide_header(char *token);
 int _create_request_line(char *method, char *url, char *version, char *line);
 int create_request(char *request_string);
 

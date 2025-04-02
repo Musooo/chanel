@@ -1,3 +1,5 @@
 test.c
 *.py
 testo
+testo_head
+.vscode

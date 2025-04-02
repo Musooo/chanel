@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 enum status
 {
@@ -53,9 +54,9 @@ struct body
 
 struct request
 {
-        char *method;
-        char *url;
-        char *version;
+        char *method[16];
+        char *url[256];
+        char *version[16];
         struct header h;
         /* the header and the body are separeted by a empty line*/
         struct body b;
@@ -73,6 +74,25 @@ int _create_request_line(char *method, char *url, char *version, char *token)
 
 
         return 0;
+}
+
+int _create_headers_from_request(char *token, struct header* h){
+}
+
+struct head _divide_header(char *token){
+        char *line = strtok(token, ":");
+        char *key = malloc(strlen(line) + 1);
+        strcpy(key, line);
+        line = strtok(NULL, " ");
+        char *value = malloc(strlen(line) + 1);
+        strcpy(value, line);
+
+        struct head h;
+
+        h.key = key;
+        h.value = value;
+
+        return h;
 }
 
 int create_request(char *request_string)
