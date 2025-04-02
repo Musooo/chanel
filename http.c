@@ -76,10 +76,12 @@ int _create_request_line(char *method, char *url, char *version, char *token)
         return 0;
 }
 
-int _create_headers_from_request(char *token, struct header* h){
+int _create_headers_from_request(char *token, struct header* h)
+{
 }
 
-struct head _divide_header(char *token){
+struct head _divide_header(char *token)
+{
         char *line = strtok(token, ":");
         char *key = malloc(strlen(line) + 1);
         strcpy(key, line);
@@ -97,15 +99,30 @@ struct head _divide_header(char *token){
 
 int create_request(char *request_string)
 {
+        //printf("%s\n", request_string);
         char method[16];
         char url[256];
         char version[16];
         char *token = strtok(request_string, "\n");
-        _create_request_line(method, url, version, token); 
+        char *req_line = malloc(strlen(token)+1);
+        strcpy(req_line, token);
         
+        token = strtok(NULL, "\n");
+        while (token)
+        {
+                printf("%s\n", token);
+                token = strtok(NULL, "\n");
+        }
+        
+
+        /* we work later on the request line because else it gives me problem and idk how to solve this so yea, but this should be fine*/
+        _create_request_line(method, url, version, req_line);
+        free(req_line);
         printf("%s\n", method);
         printf("%s\n", url);
         printf("%s\n", version);
+
+
 
         return 0;
 }
