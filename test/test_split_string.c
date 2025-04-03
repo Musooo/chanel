@@ -6,6 +6,8 @@ int main()
         char msg[] = "oi-ii-io";
         split_string(msg, '-');
         printf("%s\n", msg);
-        printf("%s\n", next_string(msg)); // this is gona print ii
-        printf("%s\n", msg); //this print oi
+        char *ptrf = next_string(msg);
+        printf("%s\n", ptrf); // this is gona print ii
+        ptrf = next_string(ptrf);
+        printf("%s\n", ptrf); // this is gona print oi
 }

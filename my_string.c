@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 int split_string(char *string, char char_where_to_split)
 {
         while (*string!='\0')

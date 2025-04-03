@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "my_string.h"
 
 enum status
 {
@@ -45,29 +46,31 @@ struct head
         char *value;
 };
 
-struct header
-{
-        struct head *headers;
-};
+// struct header
+// {
+//         struct head *headers;
+// };
 
-struct body
-{
-        char *body;
-};
+// struct body
+// {
+//         char *body;
+// };
 
 struct request
 {
-        char *method;
-        char *url;
-        char *version;
-        struct header h;
+        char method[16];
+        char url[256];
+        char version[16];
+        struct head *headers;
         /* the header and the body are separeted by a empty line*/
-        struct body b;
+        char *body;
 };
 
+
 struct head _divide_header(char *token);
+int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *size);
 int _create_request_line(char *method, char *url, char *version, char *line);
-int _create_headers_from_request(char *token, struct header *h);
-int create_request(char *request_string, struct request **req);
+int _create_headers_from_request(char *token, struct head **h);
+/*int create_request(char *request_string, struct request **req);*/
 
 #endif

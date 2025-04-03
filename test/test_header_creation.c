@@ -6,8 +6,9 @@
 
 int main(void){
     char req[] = "Host: example\nAccept-language:qq\n";
-    struct header *h = NULL;
-    _create_headers_from_request(req, h);
+    struct head *h = NULL;
+    _create_headers_from_request(req, &h);
+    printf("%s\n", h[0].key);
 
     return 0;
 }
