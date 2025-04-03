@@ -2,4 +2,4 @@ test.c
 *.py
 bin/
 .vscode
-
+vgcore.*

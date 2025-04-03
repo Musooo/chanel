@@ -67,6 +67,7 @@ struct request
 
 struct head _divide_header(char *token);
 int _create_request_line(char *method, char *url, char *version, char *line);
-int create_request(char *request_string);
+int _create_headers_from_request(char *token, struct header *h);
+int create_request(char *request_string, struct request **req);
 
 #endif
