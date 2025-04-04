@@ -8,18 +8,16 @@ int main(void){
 
     struct request r = init_request();
 
-    char *method = NULL;
-    char *url = NULL;
-    char *version = NULL;
-    char *token = _create_request_line(&method, &url, &version, req);
+    char *token = _create_request_line(&(r.method), &(r.url), &(r.version), req);
 
-    r.version = version;
-    r.method = method;
-    r.url = url;
 
-    struct head *h = NULL;
-    _create_headers_from_request(token, &h);
-    r.headers=h;
+    printf("%s\n", r.method);
+    printf("%s\n", r.url);
+    printf("%s\n", r.version);
+
+
+    _create_headers_from_request(token, &(r.headers));
+    printf("%s\n", r.headers[0].key);
 
     return 0;
 }
