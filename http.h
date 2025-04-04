@@ -62,11 +62,12 @@ struct request
         char *url;
         char *version;
         struct head *headers;
+        int head_size;
         /* the header and the body are separeted by a empty line*/
         char *body;
 };
 
-
+struct request init_request();
 struct head _divide_header(char *token);
 int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *size);
 char* _create_request_line(char **method, char **url, char **version, char *line);

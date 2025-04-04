@@ -59,9 +59,24 @@ struct request
         char *url;
         char *version;
         struct head *headers;
+        int head_size;
         /* the header and the body are separeted by a empty line*/
         char *body;
 };
+
+struct request init_request(){
+        struct request r = (struct request) 
+        {
+                .method = NULL,
+                .url = NULL,
+                .version = NULL,
+                .headers = NULL,
+                .head_size = 0,
+                .body = NULL
+        };
+
+        return r;
+}
 
 int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *size)
 {
