@@ -3,3 +3,4 @@ test.c
 bin/
 .vscode
 vgcore.*
+*.txt

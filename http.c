@@ -100,7 +100,7 @@ struct head _divide_header(char *token)
         h.value = value;
 
         return h;
-}
+}/* TODO maybe we don't need to malloc, we can see if we really need al of this, like we did in the function _create_request_line*/
 
 int _create_headers_from_request(char **token, struct head **head)
 {

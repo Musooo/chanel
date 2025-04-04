@@ -3,7 +3,7 @@
 #include "../my_string.h"
 
 int main(void){
-    char req[] = "GET / HTTP/1.1\nHost: example\nAccept-language:qq\n\nciao\nweeee\naooo";
+    char req[] = "GET / HTTP/1.1\r\nHost: example\r\nAccept-language:qq\r\n\r\nciao\r\nweeee\r\naooo";
     split_request_string_until_the_body(req, '\n');
 
     struct request r = init_request();
