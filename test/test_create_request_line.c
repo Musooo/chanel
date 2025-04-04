@@ -12,7 +12,8 @@ int main(void){
 
     printf("%s\n", version);
     printf("%s\n", token);
-
+    struct head *h = NULL;
+    _create_headers_from_request(token, &h);
 
     return 0;
 }

@@ -110,16 +110,16 @@ struct head _divide_header(char *token)
 int _create_headers_from_request(char *token, struct head **head)
 {
         int size = 0;
-        char *header_string = malloc(strlen(token)+1);
-        strcpy(header_string, token);
-        split_string(header_string, '\n');
-        while (*header_string){
-                struct head h = _divide_header(header_string);
-                header_string = next_string(header_string);
+        // char *header_string = malloc(strlen(token)+1);
+        // strcpy(header_string, token);
+        // split_string(header_string, '\n');
+        while (*token){
+                struct head h = _divide_header(token);
+                token = next_string(token);
                 _add_a_header_to_the_header_arr(head,h,&size);
         }
 
-        return 0;
+        return size;
 }/* there and in func _divide_header remember to free the mem, could use a mem arena to allocate the req and resp and free it one at the end but idk*/
 
 
