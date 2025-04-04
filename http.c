@@ -55,9 +55,9 @@ struct head
 
 struct request
 {
-        char method[16];
-        char url[256];
-        char version[16];
+        char *method;
+        char *url;
+        char *version;
         struct head *headers;
         /* the header and the body are separeted by a empty line*/
         char *body;
@@ -71,18 +71,20 @@ int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *s
         return 0;
 }
 
-int _create_request_line(char *method, char *url, char *version, char *token)
+char* _create_request_line(char **method, char **url, char **version, char *token)
 {
-        char *req_line = strtok(token, " ");
-        strcpy(method, req_line);
-        req_line = strtok(NULL, " ");
-        strcpy(url, req_line);
-        req_line = strtok(NULL, " ");
-        strcpy(version, req_line);
-        req_line = strtok(NULL, " ");
+        split_string(token, ' ');
+        *method = token;
+        token = next_string(token);
+
+        *url = token;
+        token = next_string(token);
+
+        *version = token;
+        token = next_string(token);
 
 
-        return 0;
+        return token;
 }
 
 
@@ -118,7 +120,7 @@ int _create_headers_from_request(char *token, struct head **head)
         }
 
         return 0;
-}
+}/* there and in func _divide_header remember to free the mem, could use a mem arena to allocate the req and resp and free it one at the end but idk*/
 
 
 /* not working it returns with the right memory address but it's not the same size idk to fix in the future*/

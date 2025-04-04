@@ -58,9 +58,9 @@ struct head
 
 struct request
 {
-        char method[16];
-        char url[256];
-        char version[16];
+        char *method;
+        char *url;
+        char *version;
         struct head *headers;
         /* the header and the body are separeted by a empty line*/
         char *body;
@@ -69,7 +69,7 @@ struct request
 
 struct head _divide_header(char *token);
 int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *size);
-int _create_request_line(char *method, char *url, char *version, char *line);
+char* _create_request_line(char **method, char **url, char **version, char *line);
 int _create_headers_from_request(char *token, struct head **h);
 /*int create_request(char *request_string, struct request **req);*/
 
