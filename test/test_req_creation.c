@@ -3,8 +3,8 @@
 #include "../my_string.h"
 
 int main(void){
-    char req[] = "GET / HTTP/1.1\nHost: example\nAccept-language:qq\n";
-    split_string(req, '\n');
+    char req[] = "GET / HTTP/1.1\nHost: example\nAccept-language:qq\n\nciao\nweeee\naooo";
+    split_request_string_until_the_body(req, '\n');
 
     struct request r = init_request();
 
@@ -16,8 +16,15 @@ int main(void){
     printf("%s\n", r.version);
 
 
-    _create_headers_from_request(token, &(r.headers));
+    r.head_size = _create_headers_from_request(&token, &(r.headers)); //TO DO pass the size of the headers as a param of _create_headers_from_request
     printf("%s\n", r.headers[0].key);
+    printf("%s\n", token);
+
+    token = next_string(token);
+    r.body = token;
+    printf("%s\n", r.body);
+
+    print_request(r);
 
     return 0;
 }

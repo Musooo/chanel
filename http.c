@@ -27,31 +27,11 @@ enum status
         INTERNAL_SERVER_ERROR = 500,
 };
 
-/*
-enum head_name{
-        ACCEPT,
-        CONTENT_ENCODING,
-        CONTENT_LENGTH,
-        CONTENT_TYPE,
-};
-*/
-
-
 struct head
 {
         char *key;
         char *value;
 };
-
-// struct header
-// {
-//         struct head *headers;
-// };
-
-// struct body
-// {
-//         char *body;
-// };
 
 struct request
 {
@@ -122,48 +102,30 @@ struct head _divide_header(char *token)
         return h;
 }
 
-int _create_headers_from_request(char *token, struct head **head)
+int _create_headers_from_request(char **token, struct head **head)
 {
         int size = 0;
-        // char *header_string = malloc(strlen(token)+1);
-        // strcpy(header_string, token);
-        // split_string(header_string, '\n');
-        while (*token){
-                struct head h = _divide_header(token);
-                token = next_string(token);
+        while (**token && **token != '\0'){
+                printf("%s\n", *token);
+                struct head h = _divide_header(*token);
+                *token = next_string(*token);
                 _add_a_header_to_the_header_arr(head,h,&size);
         }
 
         return size;
-}/* there and in func _divide_header remember to free the mem, could use a mem arena to allocate the req and resp and free it one at the end but idk*/
+}
 
+int print_request(struct request r)
+{
 
-/* not working it returns with the right memory address but it's not the same size idk to fix in the future*/
-// int create_request(char *request_string, struct request *req)
-// {
-//         struct request *r = (struct request*)malloc(sizeof(struct request));
-//         r->h.headers = NULL;
-//         r->b.body = NULL;
-//         //printf("%s\n", request_string);
-//         char *token = strtok(request_string, "\n");
-//         char *req_line = malloc(strlen(token)+1);
-//         strcpy(req_line, token);
-        
-//         token = strtok(0, "\n");
-//         while (token)
-//         {
-//                 printf("%s\n", token);
-//                 token = strtok(0, "\n");
-//         }
-        
-//         /* we work later on the request line because else it gives me problem and idk how to solve this so yea, but this should be fine*/
-//         _create_request_line(r->method, r->url, r->version, req_line);
-//         free(req_line);
-//         printf("%s\n", r->method);
-// 	printf("%s\n", r->url);
-// 	printf("%s\n", r->version);
-//         printf("%p\n", r);
-//         return 0;
-// }
+        printf("%s\n", r.method);
+        printf("%s\n", r.url);
+        printf("%s\n", r.version);
+        for (int i = 0; i<r.head_size; i++){
+                printf("%s:", r.headers[i].key);
+                printf("%s\n", r.headers[i].value);
+        }
+        printf("%s\n", r.body);
 
-
+        return 0;
+}/*TO DO: need to know where the starting string ends, so find the original \0 and then save everything between the space and the last \0*/
