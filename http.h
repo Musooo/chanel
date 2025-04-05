@@ -67,10 +67,25 @@ struct request
         char *body;
 };
 
+struct response
+{
+        char *version;
+        char *status_number;
+        char *status_msg;
+        struct head *headers;
+        int head_size;
+        /* the header and the body are separeted by a empty line*/
+        char *body;
+};
+
 /*
         this function initialize an empty request struct
 */
 struct request init_request();
+/*
+        this function initialize an empty response struct
+*/
+struct response init_response();
 /*
         as already said, function that starts with the character "_" are not made as the primary object of being
         used by user but as private function for the library, of course if the fit your uses case use them. 
@@ -97,5 +112,6 @@ char* _create_request_line(char **method, char **url, char **version, char *line
 int _create_headers_from_request(char **token, struct head **h);
 int print_request(struct request r);
 struct request get_request(char *req);
+int free_req(struct request r);
 
 #endif

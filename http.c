@@ -44,7 +44,19 @@ struct request
         char *body;
 };
 
-struct request init_request(){
+struct response
+{
+        char *version;
+        char *status_number;
+        char *status_msg;
+        struct head *headers;
+        int head_size;
+        /* the header and the body are separeted by a empty line*/
+        char *body;
+};
+
+struct request init_request()
+{
         struct request r = (struct request) 
         {
                 .method = NULL,
@@ -56,6 +68,21 @@ struct request init_request(){
         };
 
         return r;
+}
+
+struct response init_response()
+{
+        struct response resp = (struct response)
+        {
+                .version = NULL,
+                .status_number = NULL,
+                .status_msg = NULL,
+                .headers = NULL,
+                .head_size = 0,
+                .body = NULL,
+        };
+
+        return resp;
 }
 
 int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *size)
@@ -82,7 +109,7 @@ char* _create_request_line(char **method, char **url, char **version, char *toke
         return token;
 }
 
-
+/* MEMORY LEAK in this function*/
 struct head _divide_header(char *token)
 {
         char *line = malloc(strlen(token)+1);
@@ -93,12 +120,12 @@ struct head _divide_header(char *token)
         line = next_string(line);
         char *value = malloc(strlen(line) + 1);
         strcpy(value, line);
-
+        
         struct head h;
 
         h.key = key;
         h.value = value;
-
+        
         return h;
 }/* TODO maybe we don't need to malloc, we can see if we really need al of this, like we did in the function _create_request_line*/
 
@@ -116,7 +143,6 @@ int _create_headers_from_request(char **token, struct head **head)
 
 int print_request(struct request r)
 {
-
         printf("%s\n", r.method);
         printf("%s\n", r.url);
         printf("%s\n", r.version);
@@ -142,4 +168,16 @@ struct request get_request(char *req)
         r.body = token;
 
         return r;
+}
+
+int free_req(struct request r)
+{
+        for (int i = 0; i<r.head_size; i++)
+        {
+            free(r.headers[i].key);
+            free(r.headers[i].value);
+        }
+        free(r.headers);
+
+        return 0;
 }
