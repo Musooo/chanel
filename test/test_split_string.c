@@ -8,6 +8,9 @@ int main()
         printf("%s\n", msg);
         printf("%s\n", next_string(msg));
         printf("%s\n", next_string(next_string(msg)));
+        printf("%s\n", next_string(next_string(next_string(msg))));
+        printf("%s\n", next_string(next_string(next_string(next_string(msg)))));
+        printf("%s\n", next_string(next_string(next_string(next_string(next_string(msg))))));
 
         return 0;
 }

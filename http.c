@@ -124,11 +124,14 @@ struct head _divide_header(char *token)
 int _create_headers_from_request(char **token, struct head **head)
 {
         int size = 0;
-        while (**token && **token != '\0'){
+        while (**token && **token != '\0' && **token!='\r'){
+
                 struct head h = _divide_header(*token);
+                *token = next_string(*token);
                 *token = next_string(*token);
                 _add_a_header_to_the_header_arr(head,h,&size);
         }
+        *token = next_string(*token);
         return size;
 }
 
@@ -155,7 +158,7 @@ struct request get_request(char *req)
 
         r.head_size = _create_headers_from_request(&token, &(r.headers)); //TO DO pass the size of the headers as a param of _create_headers_from_request
 
-        token = next_string(token);
+        //token = next_string(token);
         r.body = token;
 
         return r;
