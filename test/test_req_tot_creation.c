@@ -7,7 +7,8 @@ int main(void){
     char req[] = "GET / HTTP/1.1\r\nHost: example\r\nAccept-language:qq\r\n\r\nciao\r\nweeee\r\naooo";
     struct request r = get_request(req);
     print_request(r);
-    free_req(r);
+    //free_req(r);
+    free(r.headers);
 
     return 0;
 }
