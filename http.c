@@ -129,7 +129,6 @@ int _create_headers_from_request(char **token, struct head **head)
                 *token = next_string(*token);
                 _add_a_header_to_the_header_arr(head,h,&size);
         }
-
         return size;
 }
 

@@ -28,7 +28,7 @@ int split_request_string_until_the_body(char *string, char char_where_to_split)
                         *string='\0';
                         same_char_consequential+=1;
                 }else
-                        same_char_consequential+=0;
+                        same_char_consequential=0;
                 string++;
         }
 
