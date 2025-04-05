@@ -106,7 +106,6 @@ int _create_headers_from_request(char **token, struct head **head)
 {
         int size = 0;
         while (**token && **token != '\0'){
-                printf("%s\n", *token);
                 struct head h = _divide_header(*token);
                 *token = next_string(*token);
                 _add_a_header_to_the_header_arr(head,h,&size);
@@ -129,3 +128,18 @@ int print_request(struct request r)
 
         return 0;
 }/*TO DO: need to know where the starting string ends, so find the original \0 and then save everything between the space and the last \0*/
+
+struct request get_request(char *req)
+{
+        struct request r = init_request();
+        split_request_string_until_the_body(req, '\n');
+
+        char *token = _create_request_line(&(r.method), &(r.url), &(r.version), req);
+
+        r.head_size = _create_headers_from_request(&token, &(r.headers)); //TO DO pass the size of the headers as a param of _create_headers_from_request
+    
+        token = next_string(token);
+        r.body = token;
+
+        return r;
+}

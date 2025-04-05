@@ -96,5 +96,6 @@ int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *s
 char* _create_request_line(char **method, char **url, char **version, char *line);
 int _create_headers_from_request(char **token, struct head **h);
 int print_request(struct request r);
+struct request get_request(char *req);
 
 #endif
