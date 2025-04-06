@@ -33,13 +33,18 @@ struct head
         char *value;
 };
 
+struct headers
+{
+        struct head *headers;
+        int head_size;
+};
+
 struct request
 {
         char *method;
         char *url;
         char *version;
-        struct head *headers;
-        int head_size;
+        struct headers *hs;
         /* the header and the body are separeted by a empty line*/
         char *body;
 };
@@ -49,8 +54,7 @@ struct response
         char *version;
         char *status_number;
         char *status_msg;
-        struct head *headers;
-        int head_size;
+        struct headers *hs;
         /* the header and the body are separeted by a empty line*/
         char *body;
 };
@@ -62,14 +66,18 @@ struct request init_request()
                 .method = NULL,
                 .url = NULL,
                 .version = NULL,
-                .headers = NULL,
-                .head_size = 0,
+                .hs = malloc(sizeof(struct headers)),
                 .body = NULL
         };
 
+        if (r.hs)
+        {
+                r.hs->headers = NULL;
+                r.hs->head_size = 0;
+        }
+
         return r;
 }
-
 struct response init_response()
 {
         struct response resp = (struct response)
@@ -77,10 +85,15 @@ struct response init_response()
                 .version = NULL,
                 .status_number = NULL,
                 .status_msg = NULL,
-                .headers = NULL,
-                .head_size = 0,
+                .hs = malloc(sizeof(struct headers)),
                 .body = NULL,
         };
+
+        if (resp.hs)
+        {
+                resp.hs->headers = NULL;
+                resp.hs->head_size = 0;
+        }
 
         return resp;
 }
@@ -90,6 +103,7 @@ int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *s
         *headers = (struct head*) realloc(*headers, (*size+1) * sizeof(h));
         (*headers)[*size] = h;
         (*size)++;
+
         return 0;
 }
 
@@ -121,18 +135,17 @@ struct head _divide_header(char *token)
         return h;
 }
 
-int _create_headers_from_request(char **token, struct head **head)
+int _create_headers_from_request(char **token, struct headers *headers)
 {
-        int size = 0;
         while (**token && **token != '\0' && **token!='\r'){
 
                 struct head h = _divide_header(*token);
                 *token = next_string(*token);
                 *token = next_string(*token);
-                _add_a_header_to_the_header_arr(head,h,&size);
+                _add_a_header_to_the_header_arr(&(headers->headers),h,&(headers->head_size));
         }
         *token = next_string(*token);
-        return size;
+        return 0;
 }
 
 int print_request(struct request r)
@@ -140,9 +153,9 @@ int print_request(struct request r)
         printf("%s\n", r.method);
         printf("%s\n", r.url);
         printf("%s\n", r.version);
-        for (int i = 0; i<r.head_size; i++){
-                printf("%s:", r.headers[i].key);
-                printf("%s\n", r.headers[i].value);
+        for (int i = 0; i<r.hs->head_size; i++){
+                printf("%s:", r.hs->headers[i].key);
+                printf("%s\n", r.hs->headers[i].value);
         }
         printf("%s\n", r.body);
 
@@ -155,8 +168,7 @@ struct request get_request(char *req)
         split_request_string_until_the_body(req, '\n');
 
         char *token = _create_request_line(&(r.method), &(r.url), &(r.version), req);
-
-        r.head_size = _create_headers_from_request(&token, &(r.headers)); //TO DO pass the size of the headers as a param of _create_headers_from_request
+        _create_headers_from_request(&token, r.hs); //TO DO pass the size of the headers as a param of _create_headers_from_request
 
         //token = next_string(token);
         r.body = token;
@@ -166,6 +178,7 @@ struct request get_request(char *req)
 
 int free_req(struct request r)
 {
-        free(r.headers);
+        free(r.hs->headers);
+        free(r.hs);
         return 0;
 }

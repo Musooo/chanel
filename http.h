@@ -46,6 +46,12 @@ struct head
         char *value;
 };
 
+struct headers
+{
+        struct head *headers;
+        int head_size;
+};
+
 /*
         this struct represent the composition of a http request.
         compose by the http method (e.g. GET,POST,PUT,ECC...).
@@ -61,19 +67,18 @@ struct request
         char *method;
         char *url;
         char *version;
-        struct head *headers;
-        int head_size;
+        struct headers *hs;
         /* the header and the body are separeted by a empty line*/
         char *body;
 };
+
 
 struct response
 {
         char *version;
         char *status_number;
         char *status_msg;
-        struct head *headers;
-        int head_size;
+        struct headers *hs;
         /* the header and the body are separeted by a empty line*/
         char *body;
 };
@@ -109,7 +114,7 @@ int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *s
         this because in a request the first line must have that exact structure
 */
 char* _create_request_line(char **method, char **url, char **version, char *line);
-int _create_headers_from_request(char **token, struct head **h);
+int _create_headers_from_request(char **token, struct headers *h);
 int print_request(struct request r);
 struct request get_request(char *req);
 int free_req(struct request r);
