@@ -57,7 +57,8 @@ struct headers
         compose by the http method (e.g. GET,POST,PUT,ECC...).
         the url which specified which resource we want to access.
         the version of http that we are using.
-        then we have a list of header with a head_size fields so that we now how many header we have,
+        then we have a list of header with a head_size fields so that we now how many header we have all contained in a header struct
+        so working with headers is easier,
         this is going to be usefull for some future must have function
         remember that in http requests and responses the header and body are separated by a empty line.
 
@@ -115,6 +116,9 @@ int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *s
 */
 char* _create_request_line(char **method, char **url, char **version, char *line);
 int _create_headers_from_request(char **token, struct headers *h);
+int set_header(struct headers *headers, char *key, char *value);
+
+
 int print_request(struct request r);
 struct request get_request(char *req);
 int free_req(struct request r);

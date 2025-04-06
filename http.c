@@ -78,6 +78,7 @@ struct request init_request()
 
         return r;
 }
+
 struct response init_response()
 {
         struct response resp = (struct response)
@@ -123,7 +124,6 @@ char* _create_request_line(char **method, char **url, char **version, char *toke
         return token;
 }
 
-/* MEMORY LEAK HERE*/
 struct head _divide_header(char *token)
 {
         split_string(token, ':');
@@ -148,16 +148,29 @@ int _create_headers_from_request(char **token, struct headers *headers)
         return 0;
 }
 
+int set_header(struct headers *headers, char *key, char *value)
+{
+        struct head h = 
+        {
+                .key = key,
+                .value = value
+        };
+
+        _add_a_header_to_the_header_arr(&(headers->headers),h,&(headers->head_size));
+
+        return 0;
+}
+
 int print_request(struct request r)
 {
-        printf("%s\n", r.method);
-        printf("%s\n", r.url);
+        printf("%s ", r.method);
+        printf("%s ", r.url);
         printf("%s\n", r.version);
         for (int i = 0; i<r.hs->head_size; i++){
                 printf("%s:", r.hs->headers[i].key);
                 printf("%s\n", r.hs->headers[i].value);
         }
-        printf("%s\n", r.body);
+        printf("\n%s\n", r.body);
 
         return 0;
 }/*TO DO: need to know where the starting string ends, so find the original \0 and then save everything between the space and the last \0*/
@@ -168,9 +181,8 @@ struct request get_request(char *req)
         split_request_string_until_the_body(req, '\n');
 
         char *token = _create_request_line(&(r.method), &(r.url), &(r.version), req);
-        _create_headers_from_request(&token, r.hs); //TO DO pass the size of the headers as a param of _create_headers_from_request
+        _create_headers_from_request(&token, r.hs);
 
-        //token = next_string(token);
         r.body = token;
 
         return r;
