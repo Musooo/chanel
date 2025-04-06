@@ -148,7 +148,7 @@ int _create_headers_from_request(char **token, struct headers *headers)
         return 0;
 }
 
-int set_header(struct headers *headers, char *key, char *value)
+int set_header(struct headers *header, char *key, char *value)
 {
         struct head h = 
         {
@@ -156,9 +156,31 @@ int set_header(struct headers *headers, char *key, char *value)
                 .value = value
         };
 
-        _add_a_header_to_the_header_arr(&(headers->headers),h,&(headers->head_size));
+        _add_a_header_to_the_header_arr(&(header->headers),h,&(header->head_size));
 
         return 0;
+}
+
+int get_header_value_index(struct headers *header, char *key)
+{
+        for (int i = 0; i<header->head_size; i++)
+        {
+                if (strcmp(header->headers[i].key, key)==0)
+                        return i;
+        }
+
+        return -1;
+}
+
+char* get_header_value(struct headers *header, char *key)
+{
+        for (int i = 0; i<header->head_size; i++)
+        {
+                if (strcmp(header->headers[i].key, key)==0)
+                        return header->headers[i].value;
+        }
+
+        return NULL;
 }
 
 int print_request(struct request r)

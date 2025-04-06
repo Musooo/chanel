@@ -117,7 +117,8 @@ int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *s
 char* _create_request_line(char **method, char **url, char **version, char *line);
 int _create_headers_from_request(char **token, struct headers *h);
 int set_header(struct headers *headers, char *key, char *value);
-
+int get_header_value_index(struct headers *header, char *key);
+char* get_header_value(struct headers *header, char *key);
 
 int print_request(struct request r);
 struct request get_request(char *req);
