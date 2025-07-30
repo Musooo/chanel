@@ -1,3 +1,11 @@
+
+enum string_error
+{
+	MAX_CHAR_LENGTH_SUCCEEDED = -1,
+	DIFFERENT_STRINGS = -2,
+};
+
+
 int split_string(char *string, char char_where_to_split)
 {
         int count = 0;
@@ -44,4 +52,45 @@ char* next_string(char *string)
         string++;
         return string++;
         
+}
+
+int len_n(char *string, const int max_length)
+{
+	int tot = 0;
+	while (*string!='\0' && tot<=max_length)
+	{
+		string++;
+		tot++;
+	}
+	
+	if (tot>=max_length)
+	{
+		return MAX_CHAR_LENGTH_SUCCEEDED; 
+	}
+
+	return tot;
+}
+
+
+int strcmp_homemade(char *string1, char *string2, const int max_string_length)
+{
+	int count = 0;
+	int is_char_the_same = 0; /* 0 = same, 1 = not same, 2 = string to long */
+	while (*string1!='\0' && *string2!='\0' && count<=max_string_length)
+	{
+		if(*string1!=*string2)
+		{
+			return DIFFERENT_STRINGS;
+		}
+		string1++;
+		string2++;
+		count ++;
+	}
+
+	if (count>=max_string_length)
+	{
+		return MAX_CHAR_LENGTH_SUCCEEDED;
+	}
+
+	return 0;
 }
