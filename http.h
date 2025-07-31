@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "my_string.h"
-
+#define MAX_HEADER_KEY_LENGTH 1024
 /*
         this maybe usefull for the response implementation
 */
@@ -115,7 +115,7 @@ int _add_a_header_to_the_header_arr(struct head **headers, struct head h, int *s
         this because in a request the first line must have that exact structure
 */
 char* _create_request_line(char **method, char **url, char **version, char *line);
-int _create_headers_from_request(char **token, struct headers *h);
+int _create_headers_from_string(char **token, struct headers *h);
 int set_header(struct headers *headers, char *key, char *value);
 int get_header_value_index(struct headers *header, char *key);
 char* get_header_value(struct headers *header, char *key);

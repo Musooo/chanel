@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "my_string.h"
+#define MAX_HEADER_KEY_LENGTH 1024
 
 enum status
 {
@@ -45,7 +46,7 @@ struct request
         char *url;
         char *version;
         struct headers *hs;
-        /* the header and the body are separeted by a empty line*/
+        /* the header and the body are separated by a empty line*/
         char *body;
 };
 
@@ -55,7 +56,7 @@ struct response
         char *status_number;
         char *status_msg;
         struct headers *hs;
-        /* the header and the body are separeted by a empty line*/
+        /* the header and the body are separated by a empty line*/
         char *body;
 };
 
@@ -135,7 +136,7 @@ struct head _divide_header(char *token)
         return h;
 }
 
-int _create_headers_from_request(char **token, struct headers *headers)
+int _create_headers_from_string(char **token, struct headers *headers)
 {
         while (**token && **token != '\0' && **token!='\r'){
 
@@ -176,7 +177,7 @@ char* get_header_value(struct headers *header, char *key)
 {
         for (int i = 0; i<header->head_size; i++)
         {
-                if (strcmp(header->headers[i].key, key)==0)
+                if (strcmp_homemade(header->headers[i].key, key, MAX_HEADER_KEY_LENGTH)==0)
                         return header->headers[i].value;
         }
 
@@ -203,7 +204,7 @@ struct request get_request(char *req)
         split_request_string_until_the_body(req, '\n');
 
         char *token = _create_request_line(&(r.method), &(r.url), &(r.version), req);
-        _create_headers_from_request(&token, r.hs);
+        _create_headers_from_string(&token, r.hs);
 
         r.body = token;
 

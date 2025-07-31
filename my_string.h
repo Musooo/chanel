@@ -1,12 +1,11 @@
 #ifndef MY_STRING_H
 #define MY_STRING_H
 
-
-
 enum string_error
 {
-	MAX_CHAR_LENGTH_SUCCEEDED = -1,
-	DIFFERENT_STRINGS = -2,
+	MAX_CHAR_LENGTH_SUCCEEDED = -2,
+	DIFFERENT_STRINGS,
+	SUCCESS,
 };
 /*
     this function use the fact that a string in c
@@ -19,9 +18,9 @@ enum string_error
 int split_string(char *string, char char_where_to_split);
 int split_request_string_until_the_body(char *string, char char_where_to_split);
 char* next_string(char *string);
-/* it's a stlen but you pass a max length +1 that the string can assume (if the max is 4 the max word length is gonna be 3 not 4) */
-int len_n(char *string, const int max_length);
-int strcmp_homemade(char *string1, char *string2, const int max_string_length);
+/* it's a stlen but whit a max length that the string can assume (if the max is 4 the max word length is gonna be 4 not 3) */
+int len_n(char *string,  const int MAX_STRING_LENGTH);
+int strcmp_homemade(char *string1, char *string2,  const int MAX_STRING_LENGTH);
 
 
 #endif

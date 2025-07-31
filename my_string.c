@@ -1,8 +1,8 @@
-
 enum string_error
 {
-	MAX_CHAR_LENGTH_SUCCEEDED = -1,
-	DIFFERENT_STRINGS = -2,
+	MAX_CHAR_LENGTH_SUCCEEDED = -2,
+	DIFFERENT_STRINGS,
+	SUCCESS,
 };
 
 
@@ -54,16 +54,16 @@ char* next_string(char *string)
         
 }
 
-int len_n(char *string, const int max_length)
+int len_n(char *string,  const int MAX_STRING_LENGTH)
 {
 	int tot = 0;
-	while (*string!='\0' && tot<=max_length)
+	while (*string!='\0' && tot<=MAX_STRING_LENGTH)
 	{
 		string++;
 		tot++;
 	}
 	
-	if (tot>=max_length)
+	if (tot>=MAX_STRING_LENGTH)
 	{
 		return MAX_CHAR_LENGTH_SUCCEEDED; 
 	}
@@ -71,26 +71,32 @@ int len_n(char *string, const int max_length)
 	return tot;
 }
 
-
-int strcmp_homemade(char *string1, char *string2, const int max_string_length)
+int strcmp_homemade(char *string1, char *string2, const int MAX_STRING_LENGTH)
 {
 	int count = 0;
-	int is_char_the_same = 0; /* 0 = same, 1 = not same, 2 = string to long */
-	while (*string1!='\0' && *string2!='\0' && count<=max_string_length)
-	{
+	/* consider removing the first control and only check the string length*/	
+	while ((*string1!='\0' || *string2!='\0'))
+	{	
+		if (count>MAX_STRING_LENGTH)
+		{
+			return MAX_CHAR_LENGTH_SUCCEEDED;
+		}
+
 		if(*string1!=*string2)
 		{
 			return DIFFERENT_STRINGS;
 		}
+
+		if (*string1=='\0' && *string2=='\0')
+		{
+			break;
+		}
+
 		string1++;
 		string2++;
 		count ++;
 	}
 
-	if (count>=max_string_length)
-	{
-		return MAX_CHAR_LENGTH_SUCCEEDED;
-	}
 
 	return 0;
 }
